@@ -86,34 +86,22 @@ else:
         else:
             st.warning("Faltan datos para calcular este beneficio.")
 
-# 🟡 Nota S.E.U.O.
+# 🔔 Nota legal al pie
 st.markdown("---")
 st.info("**S.E.U.O:** Los resultados son estimativos y podrían aplicar otros beneficios según el caso particular. No deje de asesorarse con su abogado especialista en derecho penal de su confianza.")
 
-# 🟢 Botón WhatsApp
-numero = "5493364249566"
-mensaje = "Hola, quiero recibir asesoramiento legal sobre beneficios penitenciarios."
-url = f"https://api.whatsapp.com/send?phone={numero}&text={mensaje}"
-st.markdown(f"""
-    <a href="{url}" target="_blank">
-        <button style="background-color:#25D366;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;margin-top:10px;">
-            📲 Recibir asesoramiento legal por WhatsApp
-        </button>
-    </a>
-    """, unsafe_allow_html=True)
+# 📲 Botón de WhatsApp como enlace de texto
+st.markdown("#### ¿Necesitás ayuda?")
+st.markdown("[👉 Recibir asesoramiento legal por WhatsApp](https://api.whatsapp.com/send?phone=5493364249566&text=Hola, quiero recibir asesoramiento legal sobre beneficios penitenciarios.)")
 
-# 🖨️ Botón imprimir/guardar PDF
-st.markdown("""
-    <br>
-    <button onclick="window.print()" style="background-color:#4CAF50;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">
-        🖨️ Imprimir o guardar como PDF
-    </button>
-    """, unsafe_allow_html=True)
+# 🖨️ Botón imprimir (con workaround)
+if st.button("🖨️ Imprimir o guardar como PDF"):
+    st.markdown("<script>window.print()</script>", unsafe_allow_html=True)
 
-# 🔗 Compartir redes sociales
+# 📤 Compartir
 st.markdown("""
-    <br><b>Compartir:</b><br>
-    <a href="https://www.facebook.com/sharer/sharer.php?u=https://baladoabogadospenal.streamlit.app" target="_blank">📘 Facebook</a> |
-    <a href="https://twitter.com/intent/tweet?url=https://baladoabogadospenal.streamlit.app" target="_blank">🐦 Twitter</a> |
-    <a href="https://api.whatsapp.com/send?text=https://baladoabogadospenal.streamlit.app" target="_blank">📲 WhatsApp</a>
-    """, unsafe_allow_html=True)
+**Compartir esta calculadora:**  
+[📘 Facebook](https://www.facebook.com/sharer/sharer.php?u=https://baladoabogadospenal.streamlit.app) |  
+[🐦 Twitter](https://twitter.com/intent/tweet?url=https://baladoabogadospenal.streamlit.app) |  
+[📲 WhatsApp](https://api.whatsapp.com/send?text=https://baladoabogadospenal.streamlit.app)
+""")
