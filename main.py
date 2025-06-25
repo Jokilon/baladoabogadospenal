@@ -45,16 +45,18 @@ if total_dias == 0:
     st.warning("Ingresá la duración de la condena.")
 else:
     if conoce_fecha == "Sí" and fecha_detencion:
-        st.markdown(f"**Salidas transitorias:** faltan {formatear_dias(dias_salidas_transitorias)}  
-        _(Fecha estimada: {sumar_dias(fecha_detencion, dias_salidas_transitorias)})_")
+        st.markdown("**Salidas transitorias:** faltan " +
+                    formatear_dias(dias_salidas_transitorias) +
+                    f" _(Fecha estimada: {sumar_dias(fecha_detencion, dias_salidas_transitorias)})_")
 
-        st.markdown(f"**Libertad condicional:** faltan {formatear_dias(dias_libertad_condicional)}  
-        _(Fecha estimada: {sumar_dias(fecha_detencion, dias_libertad_condicional)})_")
+        st.markdown("**Libertad condicional:** faltan " +
+                    formatear_dias(dias_libertad_condicional) +
+                    f" _(Fecha estimada: {sumar_dias(fecha_detencion, dias_libertad_condicional)})_")
 
-        st.markdown(f"**Libertad asistida:** faltan {formatear_dias(dias_libertad_asistida)}  
-        _(Fecha estimada: {sumar_dias(fecha_detencion, dias_libertad_asistida)})_")
+        st.markdown("**Libertad asistida:** faltan " +
+                    formatear_dias(dias_libertad_asistida) +
+                    f" _(Fecha estimada: {sumar_dias(fecha_detencion, dias_libertad_asistida)})_")
     else:
         st.markdown(f"**Salidas transitorias:** luego de {formatear_dias(dias_salidas_transitorias)}")
         st.markdown(f"**Libertad condicional:** luego de {formatear_dias(dias_libertad_condicional)}")
         st.markdown(f"**Libertad asistida:** luego de {formatear_dias(dias_libertad_asistida)}")
-
