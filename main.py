@@ -2,7 +2,7 @@ import streamlit as st
 from datetime import datetime, timedelta
 import locale
 
-# Cambiar idioma del calendario a español (solo en entorno local o compatible)
+# Intentar usar el calendario en español
 try:
     locale.setlocale(locale.LC_TIME, 'es_ES.utf8')
 except:
@@ -24,7 +24,7 @@ else:
         años_det = st.number_input("Años detenido", min_value=0, max_value=50, value=0)
     with col2:
         meses_det = st.number_input("Meses detenido", min_value=0, max_value=11, value=0)
-    tiempo_detencion = (años_det * 12 + meses_det) * 30  # aprox días
+    tiempo_detencion = (años_det * 12 + meses_det) * 30.4375  # más preciso
 
 col1, col2 = st.columns(2)
 with col1:
@@ -34,14 +34,14 @@ with col2:
 
 # Cálculo de días totales de condena
 meses_totales = anios * 12 + meses
-dias_totales = meses_totales * 30.4375  # promedio
+dias_totales = meses_totales * 30.4375  # promedio mensual
 
 # Porcentajes y beneficios
 beneficios = {
     "Salidas transitorias": dias_totales * 0.5,
     "Libertad condicional": dias_totales * (2 / 3),
     "Libertad asistida (Nacional)": dias_totales - 180,
-    "Libertad asistida (PBA)": (dias_totales * (2 / 3)) - 180
+    "Libertad asistida (PBA - 6 meses antes de los 2/3)": (dias_totales * (2 / 3)) - 180
 }
 
 def format_fecha(f):
@@ -49,7 +49,7 @@ def format_fecha(f):
 
 def calcular_mensaje(nombre_beneficio, dias_necesarios):
     hoy = datetime.now().date()
-    
+
     if fecha_detencion:
         fecha_estim = fecha_detencion + timedelta(days=dias_necesarios)
         if fecha_estim <= hoy:
@@ -71,19 +71,4 @@ def calcular_mensaje(nombre_beneficio, dias_necesarios):
     return f'Faltan {years} años, {months} meses y {days} días para {nombre_beneficio}.', 'error'
 
 if dias_totales == 0:
-    st.warning("Ingresá los años y meses de condena.")
-else:
-    st.subheader("Resultados:")
-
-    for nombre, dias in beneficios.items():
-        mensaje, tipo = calcular_mensaje(nombre, dias)
-        st.markdown(f'**{nombre}:**')
-        if mensaje:
-            if tipo == 'error':
-                st.error(mensaje)
-            elif tipo == 'success':
-                st.success(mensaje)
-            else:
-                st.info(mensaje)
-        else:
-            st.warning("Faltan datos para calcular este beneficio.")
+    st.warnin
