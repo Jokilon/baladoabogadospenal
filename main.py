@@ -2,19 +2,18 @@ import streamlit as st
 from datetime import datetime, timedelta
 import locale
 
-# Idioma español para fechas
+# Español para fechas (cuando es compatible)
 try:
     locale.setlocale(locale.LC_TIME, 'es_ES.utf8')
 except:
     pass
 
 st.set_page_config(page_title="Calculadora de beneficios penitenciarios")
-
 st.title('Calculadora de Beneficios Penitenciarios')
 
+# Ingreso de modo
 modo = st.radio("¿Cómo querés calcular?", ["Conozco la fecha de detención", "No conozco la fecha exacta (solo el tiempo detenido)"])
 
-# Ingreso de datos
 if modo == "Conozco la fecha de detención":
     fecha_detencion = st.date_input('Fecha de detención', format='DD/MM/YYYY')
     tiempo_detencion = None
@@ -27,18 +26,17 @@ else:
         meses_det = st.number_input("Meses detenido", min_value=0, max_value=11, value=0)
     tiempo_detencion = (años_det * 12 + meses_det) * 30.4375
 
-# Condena total
+# Ingreso de condena
 col1, col2 = st.columns(2)
 with col1:
     anios = st.number_input('Años de condena', min_value=0, max_value=50, value=0)
 with col2:
     meses = st.number_input('Meses de condena', min_value=0, max_value=11, value=0)
 
-# Cálculo de días de condena
+# Cálculo de días
 meses_totales = anios * 12 + meses
 dias_totales = meses_totales * 30.4375
 
-# Beneficios
 beneficios = {
     "Salidas transitorias": dias_totales * 0.5,
     "Libertad condicional": dias_totales * (2 / 3),
@@ -70,7 +68,7 @@ def calcular_mensaje(nombre_beneficio, dias_necesarios):
     days = rem
     return f'Faltan {years} años, {months} meses y {days} días para {nombre_beneficio}.', 'error'
 
-# Mostrar resultados
+# Resultados
 if dias_totales == 0:
     st.warning("Ingresá los años y meses de condena.")
 else:
@@ -88,34 +86,34 @@ else:
         else:
             st.warning("Faltan datos para calcular este beneficio.")
 
-    # 🟡 Nota aclaratoria
-    st.markdown("---")
-    st.info("**S.E.U.O:** Los resultados son estimativos y podrían aplicar otros beneficios según el caso particular. No deje de asesorarse con su abogado especialista en derecho penal de su confianza.")
+# 🟡 Nota S.E.U.O.
+st.markdown("---")
+st.info("**S.E.U.O:** Los resultados son estimativos y podrían aplicar otros beneficios según el caso particular. No deje de asesorarse con su abogado especialista en derecho penal de su confianza.")
 
-    # 🟢 Botón de WhatsApp
-    numero = "5493364249566"  # Reemplazá con tu número si es otro
-    mensaje = "Hola, quiero recibir asesoramiento legal sobre beneficios penitenciarios."
-    url = f"https://api.whatsapp.com/send?phone={numero}&text={mensaje}"
-    st.markdown(f"""
-        <a href="{url}" target="_blank">
-            <button style="background-color:#25D366;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">
-                📲 Recibir asesoramiento legal por WhatsApp
-            </button>
-        </a>
-        """, unsafe_allow_html=True)
-
-    # 🖨️ Botón para imprimir
-    st.markdown("""
-        <br>
-        <button onclick="window.print()" style="background-color:#4CAF50;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">
-            🖨️ Imprimir resultados
+# 🟢 Botón WhatsApp
+numero = "5493364249566"
+mensaje = "Hola, quiero recibir asesoramiento legal sobre beneficios penitenciarios."
+url = f"https://api.whatsapp.com/send?phone={numero}&text={mensaje}"
+st.markdown(f"""
+    <a href="{url}" target="_blank">
+        <button style="background-color:#25D366;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;margin-top:10px;">
+            📲 Recibir asesoramiento legal por WhatsApp
         </button>
-        """, unsafe_allow_html=True)
+    </a>
+    """, unsafe_allow_html=True)
 
-    # 🔗 Compartir en redes
-    st.markdown("""
-        <br><b>Compartir:</b><br>
-        <a href="https://www.facebook.com/sharer/sharer.php?u=https://baladoabogadospenal.streamlit.app" target="_blank">📘 Facebook</a> |
-        <a href="https://twitter.com/intent/tweet?url=https://baladoabogadospenal.streamlit.app" target="_blank">🐦 Twitter</a> |
-        <a href="https://api.whatsapp.com/send?text=https://baladoabogadospenal.streamlit.app" target="_blank">📲 WhatsApp</a>
-        """, unsafe_allow_html=True)
+# 🖨️ Botón imprimir/guardar PDF
+st.markdown("""
+    <br>
+    <button onclick="window.print()" style="background-color:#4CAF50;color:white;padding:10px 20px;border:none;border-radius:5px;cursor:pointer;">
+        🖨️ Imprimir o guardar como PDF
+    </button>
+    """, unsafe_allow_html=True)
+
+# 🔗 Compartir redes sociales
+st.markdown("""
+    <br><b>Compartir:</b><br>
+    <a href="https://www.facebook.com/sharer/sharer.php?u=https://baladoabogadospenal.streamlit.app" target="_blank">📘 Facebook</a> |
+    <a href="https://twitter.com/intent/tweet?url=https://baladoabogadospenal.streamlit.app" target="_blank">🐦 Twitter</a> |
+    <a href="https://api.whatsapp.com/send?text=https://baladoabogadospenal.streamlit.app" target="_blank">📲 WhatsApp</a>
+    """, unsafe_allow_html=True)
