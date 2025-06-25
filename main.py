@@ -12,8 +12,10 @@ st.set_page_config(page_title="Calculadora de beneficios penitenciarios")
 
 st.title('Calculadora de Beneficios Penitenciarios')
 
+# Opción de ingreso
 modo = st.radio("¿Cómo querés calcular?", ["Conozco la fecha de detención", "No conozco la fecha exacta (solo el tiempo detenido)"])
 
+# Entrada de datos según modo
 if modo == "Conozco la fecha de detención":
     fecha_detencion = st.date_input('Fecha de detención', format='DD/MM/YYYY')
     tiempo_detencion = None
@@ -26,6 +28,7 @@ else:
         meses_det = st.number_input("Meses detenido", min_value=0, max_value=11, value=0)
     tiempo_detencion = (años_det * 12 + meses_det) * 30.4375  # más preciso
 
+# Ingreso de condena
 col1, col2 = st.columns(2)
 with col1:
     anios = st.number_input('Años de condena', min_value=0, max_value=50, value=0)
@@ -44,6 +47,7 @@ beneficios = {
     "Libertad asistida (PBA - 6 meses antes de los 2/3)": (dias_totales * (2 / 3)) - 180
 }
 
+# Funciones auxiliares
 def format_fecha(f):
     return f.strftime('%d/%m/%Y')
 
@@ -70,5 +74,21 @@ def calcular_mensaje(nombre_beneficio, dias_necesarios):
     days = rem
     return f'Faltan {years} años, {months} meses y {days} días para {nombre_beneficio}.', 'error'
 
+# Mostrar resultados
 if dias_totales == 0:
-    st.warnin
+    st.warning("Ingresá los años y meses de condena.")
+else:
+    st.subheader("Resultados:")
+
+    for nombre, dias in beneficios.items():
+        mensaje, tipo = calcular_mensaje(nombre, dias)
+        st.markdown(f'**{nombre}:**')
+        if mensaje:
+            if tipo == 'success':
+                st.success(mensaje)
+            elif tipo == 'error':
+                st.error(mensaje)
+            else:
+                st.info(mensaje)
+        else:
+            st.warning("Faltan datos para calcular este beneficio.")
